@@ -1,0 +1,33 @@
+# Test configuration with H2 in-memory database
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  sql:
+    init:
+      mode: never
+  
+  h2:
+    console:
+      enabled: true
+
+jwt:
+  secret: testSecretKeyForJWTTokenGenerationInTestEnvironment123456789
+  expiration: 3600000
+  refresh-expiration: 7200000
+
+logging:
+  level:
+    com.portfolio.ecommerce: INFO
+    org.springframework.security: INFO
