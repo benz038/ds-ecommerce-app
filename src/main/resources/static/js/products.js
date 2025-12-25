@@ -76,7 +76,7 @@ function createProductCard(product) {
         <div class="product-info">
             <h3 class="product-name">${product.name}</h3>
             <p class="product-description">${product.description || ''}</p>
-            <p class="product-category">Category: ${product.category?.name || 'N/A'}</p>
+            <p class="product-category">Category: ${product.categoryName || 'N/A'}</p>
             <div class="product-footer">
                 <span class="product-price">$${product.price.toFixed(2)}</span>
                 <span class="product-stock ${inStock ? 'in-stock' : 'out-of-stock'}">
@@ -157,17 +157,28 @@ function filterProducts() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const categoryId = document.getElementById('category-filter').value;
 
+    console.log('Filtering - Search:', searchTerm, 'Category:', categoryId);
+    console.log('Total products:', allProducts.length);
+
     let filtered = allProducts;
 
+    // Apply search filter
     if (searchTerm) {
         filtered = filtered.filter(p => 
             p.name.toLowerCase().includes(searchTerm) ||
             (p.description && p.description.toLowerCase().includes(searchTerm))
         );
+        console.log('After search filter:', filtered.length);
     }
 
-    if (categoryId) {
-        filtered = filtered.filter(p => p.category?.id == categoryId);
+    // Apply category filter
+    if (categoryId && categoryId !== '') {
+        const categoryIdNum = parseInt(categoryId);
+        filtered = filtered.filter(p => {
+            const hasCategory = p.categoryId === categoryIdNum;
+            return hasCategory;
+        });
+        console.log('After category filter:', filtered.length);
     }
 
     displayProducts(filtered);
